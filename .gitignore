@@ -1,0 +1,29 @@
+*~
+*.bak
+*.log
+*.orig
+*.swp
+*.tmp
+
+# Bower, Composer, Node, Sass
+bower_components
+vendor/
+node_modules
+npm-debug.log*
+.sass-cache/
+.tmp/
+*.css.map
+
+# Eclipse, NetBeans, PhpStorm, SublimeText
+.project
+.buildpath
+.settings/
+nbproject/
+.idea/
+*.cache
+*.sublime-*
+
+# OS
+._*
+.DS_Store
+Thumbs.db
