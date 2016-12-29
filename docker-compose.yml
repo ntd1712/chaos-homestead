@@ -9,21 +9,19 @@ services:
     ports:
       - "80:80"
     volumes:
-      - ./.docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
-      - ./.docker/nginx/error.log:/var/log/nginx/error.log
-      - ./.docker/nginx/access.log:/var/log/nginx/access.log
+      - ./www:/usr/share/nginx/html
+      - ./.docker/nginx:/etc/nginx/conf.d
+      - ./.docker/nginx:/var/log/nginx
 
   phpfpm:
     container_name: phpfpm
     image: php:fpm
     volumes:
-      - ./www:/usr/share/nginx/html
+     - ./www:/usr/share/nginx/html
 
   mariadb:
     container_name: mariadb
     image: mariadb:10.1
-    ports:
-      - "3306:3306"
     volumes:
       - ./.docker/mariadb:/var/lib/mysql
     environment:
@@ -32,8 +30,6 @@ services:
   redis:
     container_name: redis
     image: redis:alpine
-    ports:
-      - "6379:6379"
     restart: always
 
   phpmyadmin:
@@ -54,7 +50,6 @@ services:
     image: temal/logio-server
     ports:
       - "28778:28778"
-      - "28777:28777"
     restart: always
     volumes:
       - ./.docker/logio:/home/logio/.log.io
