@@ -111,3 +111,4 @@ AUTHORS text eol=lf
 *.pyc binary
 *.pdf binary
 *.gz binary
+*.pbxproj binary merge=union

@@ -1,36 +1,49 @@
 version: "2"
 
 services:
-  nginx:
-    container_name: nginx
-    image: nginx:1.11-alpine
-    links:
-      - phpfpm
+  logio:
+    container_name: logio
+    image: temal/logio-server
     ports:
-      - "80:80"
-    volumes:
-      - ./www:/usr/share/nginx/html
-      - ./.docker/nginx:/etc/nginx/conf.d
-      - ./.docker/nginx:/var/log/nginx
+      - "28778:28778"
+    restart: always
+    volumes_from:
+      - storage
 
-  phpfpm:
-    container_name: phpfpm
-    image: php:fpm
-    volumes:
-     - ./www:/usr/share/nginx/html
+  logio_havester:
+    container_name: logio_havester
+    image: temal/logio-harvester
+    depends_on:
+      - logio
+    restart: always
+    volumes_from:
+      - storage
 
   mariadb:
     container_name: mariadb
     image: mariadb:10.1
-    volumes:
-      - ./.docker/mariadb:/var/lib/mysql
+    volumes_from:
+      - storage
     environment:
       - MYSQL_ROOT_PASSWORD=root
 
-  redis:
-    container_name: redis
-    image: redis:alpine
-    restart: always
+  nginx:
+    container_name: nginx
+    image: nginx:1.11-alpine
+    depends_on:
+      - mariadb
+    links:
+      - phpfpm
+    ports:
+      - "80:80"
+    volumes_from:
+      - storage
+
+  phpfpm:
+    container_name: phpfpm
+    image: php:fpm
+    volumes_from:
+      - storage
 
   phpmyadmin:
     container_name: phpmyadmin
@@ -45,25 +58,27 @@ services:
       - PMA_USER=root
       - PMA_PASSWORD=root
 
-  logio:
-    container_name: logio
-    image: temal/logio-server
-    ports:
-      - "28778:28778"
-    restart: always
-    volumes:
-      - ./.docker/logio:/home/logio/.log.io
+  redis:
+    container_name: redis
+    image: redis:alpine
 
-  logio_havester:
-    container_name: logio_havester
-    image: temal/logio-harvester
-    links:
-      - logio
-    restart: always
+  storage:
+    container_name: storage
+    image: leighmcculloch/unison:latest
+    ports:
+      - "5000:5000"
     volumes:
+      - db:/var/lib/mysql
+      - log_nginx:/var/log/nginx
       - ./.docker/logio:/home/logio/.log.io
-    volumes_from:
-      - nginx
+      - ./.docker/nginx:/etc/nginx/conf.d
+      - ./www:/usr/share/nginx/html
+    environment:
+      - UNISON_WORKING_DIR=/var/chaos
+
+volumes:
+  db: {}
+  log_nginx: {}
 
 networks:
   default:
