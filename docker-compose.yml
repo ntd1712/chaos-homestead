@@ -1,76 +1,46 @@
 version: "2"
 
 services:
-  logio:
-    container_name: logio
-    image: temal/logio-server
-    ports:
-      - "28778:28778"
-    restart: always
-    volumes_from:
-      - storage
-
-  logio_havester:
-    container_name: logio_havester
-    image: temal/logio-harvester
-    depends_on:
-      - logio
-    restart: always
-    volumes_from:
-      - storage
-
-  mariadb:
-    container_name: mariadb
+  mysql:
+    container_name: chaos_mysql
     image: mariadb:10.1
+    ports:
+    - "3306:3306"
     volumes_from:
       - storage
     environment:
       - MYSQL_ROOT_PASSWORD=root
 
   nginx:
-    container_name: nginx
+    container_name: chaos_nginx
     image: nginx:1.11-alpine
     depends_on:
-      - mariadb
-    links:
-      - phpfpm
+      - mysql
     ports:
       - "80:80"
     volumes_from:
       - storage
 
-  phpfpm:
-    container_name: phpfpm
-    image: php:fpm
+  php:
+    container_name: chaos_php
+    image: php:7.1-fpm-alpine
     volumes_from:
       - storage
 
-  phpmyadmin:
-    container_name: phpmyadmin
-    image: phpmyadmin/phpmyadmin:4.6
-    links:
-      - mariadb:db
-    ports:
-      - 81:80
-    restart: always
-    environment:
-      - PMA_ARBITRARY=1
-      - PMA_USER=root
-      - PMA_PASSWORD=root
-
   redis:
-    container_name: redis
+    container_name: chaos_redis
     image: redis:alpine
+    ports:
+      - "6379:6379"
 
   storage:
-    container_name: storage
+    container_name: chaos_storage
     image: leighmcculloch/unison:latest
     ports:
       - "5000:5000"
     volumes:
       - db:/var/lib/mysql
       - log_nginx:/var/log/nginx
-      - ./.docker/logio:/home/logio/.log.io
       - ./.docker/nginx:/etc/nginx/conf.d
       - ./www:/usr/share/nginx/html
     environment:
