@@ -27,6 +27,23 @@ services:
     volumes_from:
       - storage
 
+  gearman:
+    container_name: chaos_gearman
+    image: contemi/noria-gearmand
+    ports:
+      - "4730:4730"
+    volumes_from:
+      - storage
+
+  rabbitmq:
+    container_name: chaos_rabbitmq
+    image: rabbitmq:3.6.8-management
+    ports:
+      - "15672:15672"
+    environment:
+      - RABBITMQ_DEFAULT_USER=demo
+      - RABBITMQ_DEFAULT_PASS=demo123
+
   redis:
     container_name: chaos_redis
     image: redis:alpine

@@ -1,6 +1,17 @@
 version: "2" #CMD: docker-compose -f docker-compose.yml -f docker-compose.override.yml up -d --force-recreate
 
 services:
+  gearman-ui:
+    container_name: chaos_gearman-ui
+    image: koryonik/gearman-ui
+    links:
+      - gearman
+    ports:
+      - "82:80"
+    restart: always
+    volumes_from:
+      - storage
+
   logio:
     container_name: chaos_logio
     image: temal/logio-server
