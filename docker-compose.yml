@@ -2,57 +2,69 @@ version: "2"
 
 services:
   mysql:
-    container_name: chaos_mysql
     image: mariadb:10.1
-    ports:
-    - "3306:3306"
-    volumes_from:
-      - storage
     environment:
       - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_USER=demo
+      - MYSQL_PASSWORD=demo123
+    networks:
+     - chaosnet
+    ports:
+    - "3306:3306"
+    stdin_open: true
+    volumes_from:
+      - storage
 
   nginx:
-    container_name: chaos_nginx
     image: nginx:1.11-alpine
-    depends_on:
-      - mysql
+    networks:
+     - chaosnet
     ports:
       - "80:80"
     volumes_from:
       - storage
 
   php:
-    container_name: chaos_php
     image: php:7.1-fpm-alpine
+    networks:
+     - chaosnet
+    stdin_open: true
     volumes_from:
       - storage
 
   gearman:
-    container_name: chaos_gearman
     image: contemi/noria-gearmand
+    networks:
+     - chaosnet
     ports:
       - "4730:4730"
     volumes_from:
       - storage
 
   rabbitmq:
-    container_name: chaos_rabbitmq
     image: rabbitmq:3.6.8-management
-    ports:
-      - "15672:15672"
     environment:
       - RABBITMQ_DEFAULT_USER=demo
       - RABBITMQ_DEFAULT_PASS=demo123
+    networks:
+     - chaosnet
+    ports:
+      - "15672:15672"
 
   redis:
-    container_name: chaos_redis
     image: redis:alpine
+    networks:
+     - chaosnet
     ports:
       - "6379:6379"
+    stdin_open: true
 
   storage:
-    container_name: chaos_storage
     image: leighmcculloch/unison:latest
+    environment:
+      - UNISON_WORKING_DIR=/var/chaos
+    networks:
+     - chaosnet
     ports:
       - "5000:5000"
     volumes:
@@ -60,13 +72,11 @@ services:
       - log_nginx:/var/log/nginx
       - ./.docker/nginx:/etc/nginx/conf.d
       - ./www:/usr/share/nginx/html
-    environment:
-      - UNISON_WORKING_DIR=/var/chaos
 
 volumes:
   db: {}
   log_nginx: {}
 
 networks:
-  default:
+  chaosnet:
     driver: bridge

@@ -2,10 +2,11 @@ version: "2" #CMD: docker-compose -f docker-compose.yml -f docker-compose.overri
 
 services:
   gearman-ui:
-    container_name: chaos_gearman-ui
     image: koryonik/gearman-ui
     links:
       - gearman
+    networks:
+     - chaosnet
     ports:
       - "82:80"
     restart: always
@@ -13,8 +14,9 @@ services:
       - storage
 
   logio:
-    container_name: chaos_logio
     image: temal/logio-server
+    networks:
+     - chaosnet
     ports:
       - "28778:28778"
     restart: always
@@ -22,10 +24,11 @@ services:
       - storage
 
   logio_havester:
-    container_name: chaos_logio_havester
     image: temal/logio-harvester
     depends_on:
       - logio
+    networks:
+     - chaosnet
     restart: always
     volumes:
       - ./.docker/logio:/home/logio/.log.io
@@ -33,22 +36,15 @@ services:
       - storage
 
   phpmyadmin:
-    container_name: chaos_phpmyadmin
     image: phpmyadmin/phpmyadmin:4.6
-    links:
-      - mysql:db
-    ports:
-      - 81:80
-    restart: always
     environment:
       - PMA_ARBITRARY=1
       - PMA_USER=root
       - PMA_PASSWORD=root
-
-volumes:
-  db: {}
-  log_nginx: {}
-
-networks:
-  default:
-    driver: bridge
+    links:
+      - mysql:db
+    networks:
+     - chaosnet
+    ports:
+      - 81:80
+    restart: always
