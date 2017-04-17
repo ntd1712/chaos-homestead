@@ -3,6 +3,7 @@
 *.log
 *.orig
 *.tmp
+*.unison.*
 
 # Bower, Composer, Node, Sass
 bower_components
@@ -10,8 +11,9 @@ vendor/
 node_modules
 npm-debug.log*
 .sass-cache/
-.tmp/
 *.css.map
+composer.lock
+composer.phar
 
 # Eclipse, NetBeans, PhpStorm, SublimeText, Vim
 .project
