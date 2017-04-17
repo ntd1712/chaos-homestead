@@ -56,6 +56,7 @@ services:
       - chaosnet
     ports:
       - "5000:5000"
+    restart: always
     volumes:
       - db:/var/lib/mysql
       - logs:/var/log/nginx
