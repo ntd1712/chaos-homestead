@@ -1,18 +1,6 @@
 version: "2" #CMD: docker-compose -f docker-compose.yml -f docker-compose.override.yml up -d --force-recreate
 
 services:
-  gearman-ui:
-    image: koryonik/gearman-ui
-    links:
-      - gearman
-    networks:
-     - chaosnet
-    ports:
-      - "82:80"
-    restart: always
-    volumes_from:
-      - storage
-
   logio:
     image: temal/logio-server
     networks:
@@ -31,12 +19,12 @@ services:
      - chaosnet
     restart: always
     volumes:
-      - ./.docker/logio:/home/logio/.log.io
+      - ./services/logio:/home/logio/.log.io
     volumes_from:
       - storage
 
   phpmyadmin:
-    image: phpmyadmin/phpmyadmin:4.6
+    image: phpmyadmin/phpmyadmin:latest
     environment:
       - PMA_ARBITRARY=1
       - PMA_USER=root
@@ -46,5 +34,5 @@ services:
     networks:
      - chaosnet
     ports:
-      - 81:80
+      - 82:80
     restart: always

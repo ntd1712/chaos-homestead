@@ -5,77 +5,67 @@ services:
     image: mariadb:10.1
     environment:
       - MYSQL_ROOT_PASSWORD=root
-      - MYSQL_USER=demo
-      - MYSQL_PASSWORD=demo123
+      - MYSQL_USER=homestead
+      - MYSQL_PASSWORD=homestead12345
     networks:
-     - chaosnet
+      - chaosnet
     ports:
-    - "3306:3306"
-    stdin_open: true
+      - "3306:3306"
     volumes_from:
       - storage
 
   nginx:
     image: nginx:1.11-alpine
     networks:
-     - chaosnet
+      - chaosnet
     ports:
       - "80:80"
+      - "443:443"
     volumes_from:
       - storage
 
   php:
     image: php:7.1-fpm-alpine
     networks:
-     - chaosnet
-    stdin_open: true
-    volumes_from:
-      - storage
-
-  gearman:
-    image: contemi/noria-gearmand
-    networks:
-     - chaosnet
-    ports:
-      - "4730:4730"
+      - chaosnet
     volumes_from:
       - storage
 
   rabbitmq:
-    image: rabbitmq:3.6.8-management
+    image: rabbitmq:3.6.9-management
     environment:
-      - RABBITMQ_DEFAULT_USER=demo
-      - RABBITMQ_DEFAULT_PASS=demo123
+      - RABBITMQ_DEFAULT_USER=homestead
+      - RABBITMQ_DEFAULT_PASS=homestead12345
     networks:
-     - chaosnet
+      - chaosnet
     ports:
       - "15672:15672"
 
   redis:
-    image: redis:alpine
+    image: redis:3.0-alpine
     networks:
-     - chaosnet
+      - chaosnet
     ports:
       - "6379:6379"
-    stdin_open: true
 
   storage:
     image: leighmcculloch/unison:latest
     environment:
-      - UNISON_WORKING_DIR=/var/chaos
+      - UNISON_WORKING_DIR=/unison
     networks:
-     - chaosnet
+      - chaosnet
     ports:
       - "5000:5000"
     volumes:
       - db:/var/lib/mysql
-      - log_nginx:/var/log/nginx
-      - ./.docker/nginx:/etc/nginx/conf.d
-      - ./www:/usr/share/nginx/html
+      - logs:/var/log/nginx
+      - ./services/nginx:/etc/nginx/conf.d
+      - ./services/php/php.ini:/usr/local/etc/php/php.ini
+      - ./homestead:/usr/share/nginx/html
 
 volumes:
   db: {}
-  log_nginx: {}
+  logs: {}
 
 networks:
   chaosnet:
