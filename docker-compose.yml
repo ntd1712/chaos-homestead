@@ -15,7 +15,7 @@ services:
       - storage
 
   nginx:
-    image: nginx:1.11-alpine
+    image: nginx:1.13-alpine
     networks:
       - chaosnet
     ports:
