@@ -6,7 +6,7 @@ services:
     environment:
       - MYSQL_ROOT_PASSWORD=root
       - MYSQL_USER=homestead
-      - MYSQL_PASSWORD=homestead12345
+      - MYSQL_PASSWORD=homestead_123
     networks:
       - chaosnet
     ports:
@@ -24,7 +24,7 @@ services:
     volumes_from:
       - storage
 
-  php:
+  php7:
     image: php:7.1-fpm-alpine
     networks:
       - chaosnet
@@ -35,7 +35,7 @@ services:
     image: rabbitmq:3.6.9-management
     environment:
       - RABBITMQ_DEFAULT_USER=homestead
-      - RABBITMQ_DEFAULT_PASS=homestead12345
+      - RABBITMQ_DEFAULT_PASS=homestead_123
     networks:
       - chaosnet
     ports:

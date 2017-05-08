@@ -3,7 +3,7 @@
 *.log
 *.orig
 *.tmp
-*.unison.*
+.unison.*
 
 # Bower, Composer, Node, Sass
 bower_components
