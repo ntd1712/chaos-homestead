@@ -15,7 +15,9 @@ services:
       - storage
 
   nginx:
-    image: nginx:1.13-alpine
+    build:
+      context: ./services/nginx
+      dockerfile: ./Dockerfile
     networks:
       - chaosnet
     ports:
@@ -60,7 +62,7 @@ services:
     volumes:
       - db:/var/lib/mysql
       - logs:/var/log/nginx
-      - ./services/nginx:/etc/nginx/conf.d
+      - ./services/nginx/conf.d:/etc/nginx/conf.d
       - ./services/php/php.ini:/usr/local/etc/php/php.ini
       - ./homestead:/usr/share/nginx/html
 
