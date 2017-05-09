@@ -15,9 +15,10 @@ services:
       - storage
 
   nginx:
+    image: chaos/nginx:1.13-alpine
     build:
       context: ./services/nginx
-      dockerfile: ./Dockerfile
+      dockerfile: Dockerfile
     networks:
       - chaosnet
     ports:
