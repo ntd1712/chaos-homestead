@@ -1,4 +1,4 @@
-version: "2" #CMD: docker-compose -f docker-compose.yml -f docker-compose.override.yml up -d --force-recreate
+version: "2" # CMD: docker-compose -f docker-compose.yml -f docker-compose.override.yml up -d --force-recreate
 
 services:
   logio:
@@ -7,7 +7,6 @@ services:
      - chaosnet
     ports:
       - "28778:28778"
-    restart: always
     volumes_from:
       - storage
 
@@ -17,9 +16,6 @@ services:
       - logio
     networks:
      - chaosnet
-    restart: always
-    volumes:
-      - ./services/logio:/home/logio/.log.io
     volumes_from:
       - storage
 
@@ -35,4 +31,3 @@ services:
      - chaosnet
     ports:
       - 82:80
-    restart: always

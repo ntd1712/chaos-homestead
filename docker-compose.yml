@@ -28,14 +28,17 @@ services:
       - storage
 
   php7:
-    image: php:7.1-fpm-alpine
+    image: chaos/php:7.1-fpm-alpine
+    build:
+      context: ./services/php
+      dockerfile: Dockerfile
     networks:
       - chaosnet
     volumes_from:
       - storage
 
   rabbitmq:
-    image: rabbitmq:3.6.9-management
+    image: rabbitmq:3.6-management
     environment:
       - RABBITMQ_DEFAULT_USER=homestead
       - RABBITMQ_DEFAULT_PASS=homestead_123
@@ -63,8 +66,9 @@ services:
     volumes:
       - db:/var/lib/mysql
       - logs:/var/log/nginx
+      - ./services/logio:/home/logio/.log.io
+      - ./services/mysql:/docker-entrypoint-initdb.d
       - ./services/nginx/conf.d:/etc/nginx/conf.d
-      - ./services/php/php.ini:/usr/local/etc/php/php.ini
       - ./homestead:/usr/share/nginx/html
 
 volumes:
