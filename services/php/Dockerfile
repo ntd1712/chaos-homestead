@@ -56,11 +56,6 @@ COPY 99-overrides.ini /usr/local/etc/php/conf.d/
 COPY docker-php-ext-opcache.ini /usr/local/etc/php/conf.d/
 COPY docker-php-ext-xdebug.ini /usr/local/etc/php/conf.d/
 
-# Clear temp files
-RUN docker-php-source delete \
-    && apt-get clean; rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /usr/share/doc/* \
-    && echo 'PHP 7.1 installed.'
-
 COPY composer.phar /usr/local/bin/composer
 RUN chmod 755 /usr/local/bin/composer
 
