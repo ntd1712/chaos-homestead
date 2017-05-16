@@ -53,7 +53,6 @@ RUN \
 
 # Override configuration
 COPY 99-overrides.ini /usr/local/etc/php/conf.d/
-COPY docker-php-ext-mysqli.ini /usr/local/etc/php/conf.d/
 COPY docker-php-ext-opcache.ini /usr/local/etc/php/conf.d/
 COPY docker-php-ext-xdebug.ini /usr/local/etc/php/conf.d/
 
