@@ -47,12 +47,13 @@ RUN \
         && rm -r /tmp/xdebug.tar.gz /tmp/xdebug-XDEBUG_2_5_0
 
 RUN \
-    docker-php-ext-install apcu amqp gearman redis pdo_mysql bcmath opcache sockets xdebug && \
+    docker-php-ext-install apcu amqp gearman redis mysqli pdo_mysql bcmath opcache sockets xdebug && \
     docker-php-ext-configure event --with-event-core --with-event-extra --enable-event-debug && \
     docker-php-ext-install event
 
 # Override configuration
 COPY 99-overrides.ini /usr/local/etc/php/conf.d/
+COPY docker-php-ext-mysqli.ini /usr/local/etc/php/conf.d/
 COPY docker-php-ext-opcache.ini /usr/local/etc/php/conf.d/
 COPY docker-php-ext-xdebug.ini /usr/local/etc/php/conf.d/
 
