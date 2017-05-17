@@ -76,6 +76,7 @@ services:
       - ./homestead:/var/chaos
       - ./services/logio:/home/logio/.log.io
       - ./services/mysql:/docker-entrypoint-initdb.d
+      - ./services/nginx/certs:/etc/nginx/certs
       - ./services/nginx/conf.d:/etc/nginx/conf.d
 
 volumes:
