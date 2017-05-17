@@ -19,6 +19,10 @@ services:
     build:
       context: ./services/nginx
       dockerfile: Dockerfile
+    depends_on:
+      - storage
+      - mysql
+      - rabbitmq
     networks:
       - chaosnet
     ports:
@@ -55,25 +59,28 @@ services:
       - "6379:6379"
 
   storage:
-    image: leighmcculloch/unison:latest
+    image: chaos/storage:latest
+    build:
+      context: ./services/storage
+      dockerfile: Dockerfile
     environment:
-      - UNISON_WORKING_DIR=/unison
+      - UNISON_WORKING_DIR=/var/chaos
     networks:
       - chaosnet
     ports:
       - "5000:5000"
     restart: always
     volumes:
-      - db:/var/lib/mysql
-      - logs:/var/log/nginx
+      - mysql_lib:/var/lib/mysql
+      - nginx_log:/var/log/nginx
+      - ./homestead:/var/chaos
       - ./services/logio:/home/logio/.log.io
       - ./services/mysql:/docker-entrypoint-initdb.d
       - ./services/nginx/conf.d:/etc/nginx/conf.d
-      - ./homestead:/usr/share/nginx/html
 
 volumes:
-  db: {}
-  logs: {}
+  mysql_lib: {}
+  nginx_log: {}
 
 networks:
   chaosnet:
