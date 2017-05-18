@@ -1,10 +1,10 @@
 FROM nginx:1.13-alpine
 
-# Remove default nginx configs
+# Remove default configuration
 RUN rm -f /etc/nginx/conf.d/*
 RUN rm -f /etc/nginx/nginx.conf
 
-# Add configuration files
+# Add configuration
 COPY nginx.conf /etc/nginx/
 COPY 00-alpine.conf /etc/sysctl.d/
 

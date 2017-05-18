@@ -36,6 +36,11 @@ services:
     build:
       context: ./services/php
       dockerfile: Dockerfile
+#    links:
+#      - redis:redis.dev.php
+#      - rabbitmq:rabbitmq.dev.php
+#      - gearmand:gearman.dev.php
+#      - mysql:mysql.dev.php
     networks:
       - chaosnet
     volumes_from:
