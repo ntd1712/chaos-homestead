@@ -21,8 +21,6 @@ services:
       dockerfile: Dockerfile
     depends_on:
       - storage
-      - mysql
-      - rabbitmq
     networks:
       - chaosnet
     ports:
@@ -78,6 +76,7 @@ services:
     volumes:
       - mysql_lib:/var/lib/mysql
       - nginx_log:/var/log/nginx
+      - chaos_run:/var/run/chaos
       - ./homestead:/var/chaos
       - ./services/logio:/home/logio/.log.io
       - ./services/mysql:/docker-entrypoint-initdb.d
@@ -87,6 +86,7 @@ services:
 volumes:
   mysql_lib: {}
   nginx_log: {}
+  chaos_run: {}
 
 networks:
   chaosnet:

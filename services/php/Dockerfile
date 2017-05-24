@@ -52,7 +52,7 @@ RUN \
     docker-php-ext-install event
 
 # Override configuration
-#COPY conf/portal7.1.sock.conf /usr/local/etc/php-fpm.d/
+COPY portal.sock.conf /usr/local/etc/php-fpm.d/
 COPY 99-overrides.ini /usr/local/etc/php/conf.d/
 COPY docker-php-ext-opcache.ini /usr/local/etc/php/conf.d/
 
