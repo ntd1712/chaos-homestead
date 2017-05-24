@@ -51,6 +51,8 @@ RUN \
     docker-php-ext-configure event --with-event-core --with-event-extra --enable-event-debug && \
     docker-php-ext-install event
 
+RUN mv /usr/local/etc/php/conf.d/docker-php-ext-event.ini /usr/local/etc/php/conf.d/z-docker-php-ext-event.ini
+
 # Override configuration
 COPY portal.sock.conf /usr/local/etc/php-fpm.d/
 COPY 99-overrides.ini /usr/local/etc/php/conf.d/
