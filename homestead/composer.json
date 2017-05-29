@@ -12,8 +12,8 @@
     "oomphinc/composer-installers-extender": "^1.1",
     "chaos/common": "dev-master@dev",
     "joomla/joomla-cms": "~3.7.0",
-    "laravel/laravel": "~5.4.23",
-    "codeigniter/framework": "~3.1.4"
+    "codeigniter/framework": "~3.1.4",
+    "laravel/laravel": "~5.4.23"
   },
   "require-dev": {
     "fzaninotto/faker": "^1.6",
@@ -32,10 +32,10 @@
     "url": "https://github.com/joomla/joomla-cms"
   },{
     "type": "vcs",
-    "url": "https://github.com/laravel/laravel"
+    "url": "https://github.com/bcit-ci/CodeIgniter"
   },{
     "type": "vcs",
-    "url": "https://github.com/bcit-ci/CodeIgniter"
+    "url": "https://github.com/laravel/laravel"
   }],
   "config": {
     "secure-http": false,
@@ -47,9 +47,9 @@
     "installer-types": ["library", "project"],
     "installer-paths": {
       "shared/common": ["chaos/common"],
-      "portal/": ["joomla/joomla-cms"],
-      "service1/": ["laravel/laravel"],
-      "service2/": ["codeigniter/framework"]
+      "portal": ["joomla/joomla-cms"],
+      "auth": ["codeigniter/framework"],
+      "service": ["laravel/laravel"]
     }
   },
   "archive": {
